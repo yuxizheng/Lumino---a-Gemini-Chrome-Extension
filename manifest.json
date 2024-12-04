@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Wikipedia Definition Finder",
+    "name": "Lumino",
     "version": "1.0",
-    "description": "Fetches and displays definitions from Wikipedia",
+    "description": "A smart Chrome extension designed to enhance productivity and organization by summarizing, tagging, and simplifying web content",
     "permissions": ["activeTab", "scripting", "storage"],
     "action": {
       "default_popup": "popup.html"

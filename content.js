@@ -19,6 +19,48 @@ const style = document.createElement("style");
 shadowRoot.appendChild(style);
 
 /* ---------------------------------------- UI elements ---------------------------------------- */
+// Create the floating icon
+const floatingIcon = document.createElement("div");
+floatingIcon.textContent = "L"; // Letter L
+floatingIcon.style.cssText = `
+  position: fixed;
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%);
+  right: 0; /* Cling to the right edge */
+  width: 40px;
+  height: 40px;
+  background-color: #A999D2; 
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px 0 0 8px; /* Rounded left corners */
+  cursor: pointer;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+`;
+
+// Add hover effect
+floatingIcon.addEventListener("mouseenter", () => {
+  floatingIcon.style.backgroundColor = "#8A7EB3";
+  floatingIcon.style.transform = "translateY(-50%) scale(1.1)";
+});
+
+floatingIcon.addEventListener("mouseleave", () => {
+  floatingIcon.style.backgroundColor = "#A999D2";
+  floatingIcon.style.transform = "translateY(-50%)";
+});
+
+// Add click event
+floatingIcon.addEventListener("click", () => {
+  showConversationPanel();
+});
+
+// Append the floating icon to the body
+document.body.appendChild(floatingIcon);
 
 const shadowStyle = document.createElement('style');
 shadowStyle.textContent = `
@@ -167,6 +209,7 @@ closeButton.onclick = () => {
   plusPopup.style.display = "none";
   settingsMenu.style.display = "none";
   sidePanel.style.display = "none";
+  floatingIcon.style.display = "flex"; // Show the floating icon
   document.body.style.marginRight = ""; // Reset the margin
 };
 
@@ -540,6 +583,7 @@ function deleteSummaryEntry(index) {
 
 // Function to display the summary page
 function displaySummarybook(scroll_down = false) {
+  floatingIcon.style.display = "none";
   tooltip.style.display = "none";
   sidePanel.innerHTML = "";
   sidePanel.style.display = "block";
@@ -558,7 +602,7 @@ function displaySummarybook(scroll_down = false) {
         <button 
           id="summarizeSelectedButton" 
           style="
-            background-color: #007BFF; 
+            background-color: #A999D2; 
             color: white; 
             border: none; 
             width: 120px; /* Fixed width */
@@ -569,8 +613,8 @@ function displaySummarybook(scroll_down = false) {
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
             "
-            onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';"
-            onmouseout="this.style.backgroundColor='#007BFF'; this.style.transform='scale(1)';"
+            onmouseover="this.style.backgroundColor='#8A7EB3'; this.style.transform='scale(1.05)';"
+            onmouseout="this.style.backgroundColor='#A999D2'; this.style.transform='scale(1)';"
         >
           Summarize
         </button>
@@ -752,9 +796,9 @@ function displaySummarybook(scroll_down = false) {
     if (entry.summary_content) {
       const summaryBlock = document.createElement("div");
       summaryBlock.innerHTML = `
-        <h3 style="margin-bottom: 10px; color: #0056b3;">Teaser Summary</h3>
+        <h3 style="margin-bottom: 10px; color: #007BFF;">Teaser Summary</h3>
         <p style="margin-bottom: 20px;">${entry.summary_content.teaserSummary}</p>
-        <h3 style="margin-bottom: 10px; color: #0056b3;">Key Points Summary</h3>
+        <h3 style="margin-bottom: 10px; color: #007BFF;">Key Points Summary</h3>
         <p>${entry.summary_content.keyPointsSummary}</p>
       `;
       summaryBlock.style.cssText = `
@@ -927,7 +971,7 @@ function renderAllTags(notebook) {
       margin-right: 5px; 
       margin-bottom: 5px; 
       cursor: pointer; 
-      border: 2px solid ${filterTag === tag ? "#007BFF" : "transparent"}; 
+      border: 2px solid ${filterTag === tag ? "#A999D2" : "transparent"}; 
       box-sizing: border-box; 
       transition: border 0.2s ease;
     `;
@@ -949,6 +993,7 @@ function renderAllTags(notebook) {
 }
 
 function renderNotebook(notebook, searchTerm = "", isEditing = false) {
+  floatingIcon.style.display = "none";
   // Filter entries based on the search term
   const filteredNotebook = notebook.filter((entry) => {
     const matchesSearch = entry.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -1053,15 +1098,15 @@ function renderNotebook(notebook, searchTerm = "", isEditing = false) {
           position: absolute;
           right: 16px;
           width: 50px;
-          background-color: #007BFF; 
+          background-color: #A999D2; 
           height: 30px; 
           color: white; 
           border: none; 
           border-radius: 5px; 
           padding: 8px 12px; 
           cursor: pointer;"
-          onmouseover="this.style.backgroundColor='#0056b3';" 
-          onmouseout="this.style.backgroundColor='#007BFF';"
+          onmouseover="this.style.backgroundColor='#8A7EB3';" 
+          onmouseout="this.style.backgroundColor='#A999D2';"
       >
         Edit
       </button>
@@ -1080,9 +1125,9 @@ function renderNotebook(notebook, searchTerm = "", isEditing = false) {
     />
     <button 
       id="searchButton" 
-      style="margin-left: 10px; padding: 8px 12px; border: none; border-radius: 5px; background-color: #007BFF; color: white; cursor: pointer;"
-      onmouseover="this.style.backgroundColor='#0056b3';" 
-      onmouseout="this.style.backgroundColor='#007BFF';"
+      style="margin-left: 10px; padding: 8px 12px; border: none; border-radius: 5px; background-color: #A999D2; color: white; cursor: pointer;"
+      onmouseover="this.style.backgroundColor='#8A7EB3';" 
+      onmouseout="this.style.backgroundColor='#A999D2';"
     >
       🔍
     </button>
@@ -1259,7 +1304,7 @@ plusPopup.innerHTML = `
     </div>
     <button id="plusPopupSaveButton" style="
       width: 100%; 
-      background-color: #007BFF; 
+      background-color: #A999D2; 
       color: white; 
       padding: 10px; 
       border: none; 
@@ -1343,7 +1388,7 @@ tagInput.addEventListener("keydown", (event) => {
       } else {
         // If tag is not selected, add it
         selectedTags.add(tagValue); // Add to selectedTags
-        tagElement.style.borderColor = "#007BFF"; // Add a blue border
+        tagElement.style.borderColor = "#A999D2"; // Add a blue border
       }
     });
 
@@ -1421,7 +1466,7 @@ function updateTagDisplay() {
       } else {
         // If tag is not selected, add it
         selectedTags.add(tag); // Add to selectedTags
-        tagElement.style.borderColor = "#007BFF"; // Add a blue border
+        tagElement.style.borderColor = "#A999D2"; // Add a blue border
       }
     });
 
@@ -1528,6 +1573,7 @@ converButton.onclick = () => {
 };
 
 function showConversationPanel() {
+  floatingIcon.style.display = "none";
 
   sidePanel.innerHTML = `
     <h2 style="
